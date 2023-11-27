@@ -16,6 +16,6 @@ export async function GET(req: Request, res: Response) {
     return new Response("test");
   } catch (error) {
     console.error("Error fetching users:", error);
-    return new Response(JSON.stringify({ error: "Failed to fetch users" }));
+    return new Response(JSON.stringify({ error }));
   }
 }
