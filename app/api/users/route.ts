@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "../prisma";
 
-const prisma = new PrismaClient();
+export const dynamic = "force-dynamic";
 
 export async function GET(req: Request, res: Response) {
   try {
@@ -13,9 +13,11 @@ export async function GET(req: Request, res: Response) {
       },
     });
 
-    return new Response("test");
+    return new Response(JSON.stringify(users));
   } catch (error) {
     console.error("Error fetching users:", error);
-    return new Response(JSON.stringify({ error }));
+    return new Response(
+      JSON.stringify({ message: "Error while fetching users", error })
+    );
   }
 }
