@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient();
 
@@ -14,7 +13,7 @@ export async function GET(req: Request, res: Response) {
       },
     });
 
-    return new Response(JSON.stringify(users));
+    return new Response("test");
   } catch (error) {
     console.error("Error fetching users:", error);
     return new Response(JSON.stringify({ error: "Failed to fetch users" }));
