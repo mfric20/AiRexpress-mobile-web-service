@@ -1,6 +1,6 @@
 import client from "../commercetools";
 
-export async function GET(req: Request, res: Response) {
+export async function GET(req, res) {
   try {
     const response = await client.execute({
       method: "GET",
