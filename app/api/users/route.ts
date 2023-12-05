@@ -22,10 +22,6 @@ export async function GET(req: Request, res: Response) {
       },
     });
 
-    console.log(email);
-    console.log(password);
-    console.log(user?.password);
-
     const verfication = await bcrypt.compare(
       password ?? "",
       user?.password ?? "0"
@@ -34,7 +30,7 @@ export async function GET(req: Request, res: Response) {
     if (verfication) {
       return new Response(
         JSON.stringify({
-          sucess: verfication,
+          success: verfication,
           email: user?.email,
           firstName: user?.firstName,
           lastName: user?.lastName,
@@ -44,7 +40,7 @@ export async function GET(req: Request, res: Response) {
 
     return new Response(
       JSON.stringify({
-        sucess: verfication,
+        success: verfication,
         email: "",
         firstName: "",
         lastName: "",
