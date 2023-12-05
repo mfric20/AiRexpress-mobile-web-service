@@ -8,18 +8,48 @@ export async function GET(req: Request, res: Response) {
   try {
     const url = new URL(req.url);
     const email = url.searchParams.get("email");
+    const password = url.searchParams.get("password");
 
-    const users = await prisma.user.findFirst({
+    const user = await prisma.user.findFirst({
       where: {
         email: email ?? "",
       },
+      select: {
+        email: true,
+        firstName: true,
+        lastName: true,
+        password: true,
+      },
     });
 
-    return new Response(JSON.stringify(users));
-  } catch (error) {
-    console.error("Error fetching users:", error);
+    const verfication = await bcrypt.compare(
+      password ?? "",
+      user?.password ?? "0"
+    );
+
+    if (verfication) {
+      return new Response(
+        JSON.stringify({
+          success: verfication,
+          email: user?.email,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+        })
+      );
+    }
+
     return new Response(
-      JSON.stringify({ message: "Error while fetching users", error })
+      JSON.stringify({
+        success: verfication,
+        email: "",
+        firstName: "",
+        lastName: "",
+      })
+    );
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return new Response(
+      JSON.stringify({ message: "Error while fetching user", error })
     );
   }
 }
