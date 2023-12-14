@@ -31,7 +31,6 @@ export async function GET(req: Request, res: Response) {
     );
 
     if (verfication) {
-      console.log(email), console.log(JWT_SECRET);
       const token = jwt.sign(
         { email: email?.toString() } ?? "",
         JWT_SECRET ?? "defaultSecret",
