@@ -31,9 +31,14 @@ export async function GET(req: Request, res: Response) {
       return new Response(
         JSON.stringify({
           success: verfication,
-          email: user?.email,
-          firstName: user?.firstName,
-          lastName: user?.lastName,
+          message: "Login successful!",
+          data: [
+            {
+              email: user?.email,
+              firstName: user?.firstName,
+              lastName: user?.lastName,
+            },
+          ],
         })
       );
     }
@@ -41,9 +46,8 @@ export async function GET(req: Request, res: Response) {
     return new Response(
       JSON.stringify({
         success: verfication,
-        email: "",
-        firstName: "",
-        lastName: "",
+        message: "Incorrect username or password!",
+        data: [],
       })
     );
   } catch (error) {
