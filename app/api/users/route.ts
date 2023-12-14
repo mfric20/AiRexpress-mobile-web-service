@@ -1,11 +1,14 @@
 import { IUser } from "@/types/IUser";
 import { prisma } from "../prisma";
 import * as bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request, res: Response) {
   try {
+    const JWT_SECRET = process.env.JWT_SECRET;
+
     const url = new URL(req.url);
     const email = url.searchParams.get("email");
     const password = url.searchParams.get("password");
@@ -28,12 +31,26 @@ export async function GET(req: Request, res: Response) {
     );
 
     if (verfication) {
+      const token = jwt.sign(
+        { email: email?.toString() } ?? "",
+        JWT_SECRET ?? "defaultSecret",
+        {
+          expiresIn: "2h",
+        }
+      );
+
       return new Response(
         JSON.stringify({
           success: verfication,
-          email: user?.email,
-          firstName: user?.firstName,
-          lastName: user?.lastName,
+          message: "Login successful!",
+          data: [
+            {
+              email: user?.email,
+              firstName: user?.firstName,
+              lastName: user?.lastName,
+              jwt: token,
+            },
+          ],
         })
       );
     }
@@ -41,9 +58,8 @@ export async function GET(req: Request, res: Response) {
     return new Response(
       JSON.stringify({
         success: verfication,
-        email: "",
-        firstName: "",
-        lastName: "",
+        message: "Incorrect username or password!",
+        data: [],
       })
     );
   } catch (error) {
