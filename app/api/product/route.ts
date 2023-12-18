@@ -1,10 +1,16 @@
 import client from "../commercetools";
+import jwt from "jsonwebtoken";
+import { headers } from "next/headers";
 
 export async function GET(req: Request, res: Response) {
   try {
     const url = new URL(req.url);
-    const token = url.searchParams.get("JWTToken");
+    const token = headers().get("bearer");
     const variantKey = url.searchParams.get("variantKey");
+
+    const verifiedJWT = verifyJWT(token ?? "");
+
+    if (verifiedJWT == false) return new Response("JWT not valid!");
 
     const productKey =
       variantKey?.split("-")[0] + "-" + variantKey?.split("-")[1];
@@ -88,3 +94,14 @@ export async function GET(req: Request, res: Response) {
     return new Response(JSON.stringify({ error: "Failed to fetch product!" }));
   }
 }
+
+const verifyJWT = (token: string) => {
+  const jwtSecret = process.env.JWT_SECRET ?? "";
+  try {
+    const userData = jwt.verify(token, jwtSecret);
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
