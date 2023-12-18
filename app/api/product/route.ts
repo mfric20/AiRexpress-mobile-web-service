@@ -12,7 +12,14 @@ export async function GET(req: Request, res: Response) {
 
     const verifiedJWT = verifyJWT(token ?? "");
 
-    if (verifiedJWT == false) return new Response("JWT not valid!");
+    if (verifiedJWT == false)
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: "JWT not valid!",
+          data: [],
+        })
+      );
 
     const productKey =
       variantKey?.split("-")[0] + "-" + variantKey?.split("-")[1];
@@ -90,11 +97,23 @@ export async function GET(req: Request, res: Response) {
       };
     }
 
-    return new Response(JSON.stringify(formatedProduct));
+    return new Response(
+      JSON.stringify({
+        success: true,
+        message: "Fetching successful!",
+        data: [formatedProduct],
+      })
+    );
   } catch (error) {
     console.error("Error fetching product:", error);
     return new Response(
-      JSON.stringify({ error: `Failed to fetch product! ${error}` })
+      JSON.stringify(
+        JSON.stringify({
+          success: false,
+          message: error,
+          data: [],
+        })
+      )
     );
   }
 }
