@@ -91,7 +91,9 @@ export async function GET(req: Request, res: Response) {
     return new Response(JSON.stringify(formatedProduct));
   } catch (error) {
     console.error("Error fetching product:", error);
-    return new Response(JSON.stringify({ error: "Failed to fetch product!" }));
+    return new Response(
+      JSON.stringify({ error: `Failed to fetch product! ${error}` })
+    );
   }
 }
 
