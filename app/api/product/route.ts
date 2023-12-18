@@ -2,6 +2,8 @@ import client from "../commercetools";
 import jwt from "jsonwebtoken";
 import { headers } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request, res: Response) {
   try {
     const url = new URL(req.url);
