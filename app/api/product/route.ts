@@ -38,29 +38,21 @@ export async function GET(req: Request, res: Response) {
         version: product?.body?.version,
         name: product?.body?.masterData?.current?.name?.["en-US"],
         description: product?.body?.masterData?.current?.description?.["en-US"],
-        variant: {
-          variantKey,
-          price: {
-            priceId: desiredVariant?.prices?.[0]?.id,
-            amount: desiredVariant?.prices?.[0]?.value?.centAmount / 100,
-            currency: desiredVariant?.prices?.[0]?.value?.currencyCode,
-          },
-          image: desiredVariant?.images[0]?.url,
-          inventory: {
-            inventoryId:
-              desiredVariant?.availability?.channels?.[
-                "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
-              ]?.id,
-            inventoryVersion:
-              desiredVariant?.availability?.channels?.[
-                "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
-              ]?.version,
-            quantity:
-              desiredVariant?.availability?.channels?.[
-                "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
-              ]?.availableQuantity,
-          },
-        },
+        variantKey: variantKey,
+        priceId: desiredVariant?.prices?.[0]?.id,
+        amount: desiredVariant?.prices?.[0]?.value?.centAmount / 100,
+        inventoryId:
+          desiredVariant?.availability?.channels?.[
+            "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
+          ]?.id,
+        inventoryVersion:
+          desiredVariant?.availability?.channels?.[
+            "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
+          ]?.version,
+        quantity:
+          desiredVariant?.availability?.channels?.[
+            "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
+          ]?.availableQuantity,
       };
     } else {
       const desiredVariant = product?.body?.masterData?.current?.variants?.find(
@@ -71,29 +63,21 @@ export async function GET(req: Request, res: Response) {
         version: product?.body?.version,
         name: product?.body?.masterData?.current?.name?.["en-US"],
         description: product?.body?.masterData?.current?.description?.["en-US"],
-        variant: {
-          variantKey,
-          price: {
-            priceId: desiredVariant?.prices?.[0]?.id,
-            amount: desiredVariant?.prices?.[0]?.value?.centAmount / 100,
-            currency: desiredVariant?.prices?.[0]?.value?.currencyCode,
-          },
-          image: desiredVariant?.images[0]?.url,
-          inventory: {
-            inventoryId:
-              desiredVariant?.availability?.channels?.[
-                "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
-              ]?.id,
-            inventoryVersion:
-              desiredVariant?.availability?.channels?.[
-                "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
-              ]?.version,
-            quantity:
-              desiredVariant?.availability?.channels?.[
-                "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
-              ]?.availableQuantity,
-          },
-        },
+        variantKey: variantKey,
+        priceId: desiredVariant?.prices?.[0]?.id,
+        amount: desiredVariant?.prices?.[0]?.value?.centAmount / 100,
+        inventoryId:
+          desiredVariant?.availability?.channels?.[
+            "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
+          ]?.id,
+        inventoryVersion:
+          desiredVariant?.availability?.channels?.[
+            "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
+          ]?.version,
+        quantity:
+          desiredVariant?.availability?.channels?.[
+            "9fce1ee9-e108-4654-a6b4-0f74a1008dc8"
+          ]?.availableQuantity,
       };
     }
 
