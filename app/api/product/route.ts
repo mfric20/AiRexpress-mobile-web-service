@@ -1,3 +1,4 @@
+import { IProduct } from "@/types/IProduct";
 import client from "../commercetools";
 import jwt from "jsonwebtoken";
 import { headers } from "next/headers";
@@ -99,6 +100,77 @@ export async function GET(req: Request, res: Response) {
         })
       )
     );
+  }
+}
+
+export async function POST(req: Request, res: Response) {
+  const url = new URL(req.url);
+  const token = headers().get("bearer");
+  const productData: IProduct = await req.json();
+
+  const verifiedJWT = verifyJWT(token ?? "");
+
+  if (verifiedJWT == false)
+    return new Response(
+      JSON.stringify({
+        success: false,
+        message: "JWT not valid!",
+        data: [],
+      })
+    );
+
+  try {
+    const productResponse = await client.execute({
+      method: "POST",
+      uri: `/airexpress/products/${productData.productID}`,
+      body: {
+        version: productData.version,
+        actions: [
+          {
+            action: "changeName",
+            name: {
+              "EN-US": productData.name,
+            },
+          },
+          {
+            action: "setDescription",
+            description: {
+              "EN-US": productData.description,
+            },
+          },
+          {
+            action: "changePrice",
+            priceId: `${productData.priceId}`,
+            price: {
+              value: {
+                currencyCode: "EUR",
+                centAmount: productData.amount * 100,
+              },
+            },
+            staged: true,
+          },
+        ],
+      },
+    });
+
+    const inventoryResponse = await client.execute({
+      method: "POST",
+      uri: `/airexpress/inventory/${productData.inventoryId}`,
+      body: {
+        version: productData.inventoryVersion,
+        actions: [
+          {
+            action: "changeQuantity",
+            quantity: productData.quantity,
+          },
+        ],
+      },
+    });
+
+    return new Response(JSON.stringify({ success: true }));
+  } catch (error) {
+    console.log(error);
+    return new Response(JSON.stringify({ success: false }));
   }
 }
 
