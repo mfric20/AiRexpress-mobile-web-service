@@ -5,8 +5,8 @@ import { createHttpMiddleware } from "@commercetools/sdk-middleware-http";
 const projectKey = process.env.PROJECT_KEY;
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
-const authHost = process.env.AUTHHOST;
-const httpHost = process.env.HTTPHOST;
+const authHost = process.env.AUTH_HOST;
+const httpHost = process.env.HTTP_HOST;
 
 const authMiddleware = createAuthMiddlewareForClientCredentialsFlow({
   host: authHost,
